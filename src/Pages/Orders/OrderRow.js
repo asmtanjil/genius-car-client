@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 const OrderRow = ({ order, handleDeleteOrder, handleStatusUpdate }) => {
-  const { customerName, _id, email, phone, price, serviceName, service, status } = order;
+  const { customerName, _id, phone, price, serviceName, service, status } = order;
 
   const [orderService, setOrderService] = useState({})
 
   useEffect(() => {
-    fetch(`http://localhost:5000/services/${service}`)
+    fetch(`https://genius-car-server-six-olive.vercel.app/services/${service}`)
       .then(res => res.json())
       .then(data => setOrderService(data))
   }, [service]);
@@ -24,7 +24,7 @@ const OrderRow = ({ order, handleDeleteOrder, handleStatusUpdate }) => {
           <div className="avatar">
             <div className="rounded w-24 h-24">
               {orderService?.img &&
-                <img src={orderService.img} alt="Avatar Tailwind CSS Component" />
+                <img src={orderService.img} alt="" />
               }
             </div>
           </div>
@@ -39,9 +39,9 @@ const OrderRow = ({ order, handleDeleteOrder, handleStatusUpdate }) => {
         <br />
         <span className="badge badge-ghost badge-sm">${price}</span>
       </td>
-      <td>{email}</td>
+      <td>Unique Service</td>
       <th>
-        <button onClick={() => handleStatusUpdate(_id)} className="btn btn-error btn-xs">{status ? status : 'pending'}</button>
+        <button onClick={() => handleStatusUpdate(_id)} className="btn btn-warning btn-xs">{status ? status : 'pending'}</button>
       </th>
     </tr>
   );

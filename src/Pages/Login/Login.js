@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import loginLogo from '../../assets/images/login/login.svg'
 import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 
 const Login = () => {
   const { signIn } = useContext(AuthContext)
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const from = location.state?.from?.pathname || '/'
 
   const handleLogin = e => {
     e.preventDefault()
@@ -17,6 +21,25 @@ const Login = () => {
         const user = result.user;
         console.log(user)
         form.reset();
+
+        const currentUser = {
+          email: user.email
+        }
+
+        //JSON WEB TOKEN
+        fetch('https://genius-car-server-six-olive.vercel.app/jwt', {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify(currentUser)
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+            localStorage.setItem('geniusToken', data.token)
+            navigate(from, { replace: true })
+          })
       })
       .catch(err => console.error(err))
   }

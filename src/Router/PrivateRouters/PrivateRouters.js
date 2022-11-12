@@ -7,14 +7,14 @@ const PrivateRouters = ({ children }) => {
   const location = useLocation()
 
   if (loading) {
-    return <h2>Loading</h2>
+    return <h2 text-5xl>Loading..</h2>
   }
 
   if (user) {
     return children
   }
 
-  return <Navigate state={{ from: location }} replace></Navigate>
+  return <Navigate to='/login' state={{ from: location }} replace></Navigate>
 };
 
 export default PrivateRouters;
